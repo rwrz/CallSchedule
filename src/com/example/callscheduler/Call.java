@@ -23,17 +23,17 @@ public class Call implements Parcelable{
 		telephoneNumber = p.readString();  
 	}  
 		  
-		 public static final Parcelable.Creator<Call>  
-		   CREATOR = new Parcelable.Creator<Call>() {  
-		  
-		   public Call createFromParcel(Parcel in) {  
-		     return new Call(in);  
-		   }  
-		  
-		   public Call[] newArray(int size) {  
-		     return new Call[size];  
-		   }  
-		 }; 
+	public static final Parcelable.Creator<Call>  
+	CREATOR = new Parcelable.Creator<Call>() {  
+	
+		public Call createFromParcel(Parcel in) {  
+			return new Call(in);  
+		}  
+		
+		public Call[] newArray(int size) {  
+			return new Call[size];  
+		}  
+	}; 
 	
 	public String getTelephoneNumber() 
 	{
