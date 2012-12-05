@@ -19,18 +19,21 @@ public class Call implements Parcelable{
 	}
 
 	
-	private Call(Parcel p){  
+	private Call(Parcel p)
+	{  
 		telephoneNumber = p.readString();  
 	}  
 		  
 	public static final Parcelable.Creator<Call>  
-	CREATOR = new Parcelable.Creator<Call>() {  
-	
-		public Call createFromParcel(Parcel in) {  
+	CREATOR = new Parcelable.Creator<Call>() 
+	{  
+		public Call createFromParcel(Parcel in) 
+		{  
 			return new Call(in);  
 		}  
 		
-		public Call[] newArray(int size) {  
+		public Call[] newArray(int size) 
+		{  
 			return new Call[size];  
 		}  
 	}; 
@@ -50,19 +53,26 @@ public class Call implements Parcelable{
 		return new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + telephoneNumber));
 	}
 
-	public void startCalling(Context ctx)
+	public void startCalling(Context ctx, Class SecondActivity)
 	{
-		Intent intent = new Intent(ctx, CallActivity.class);
+		Intent intent = new Intent(ctx, SecondActivity);
 		intent.putExtra("call", this);
 		ctx.startActivity(intent);
 	}
 	
-	public int describeContents() {
+	public void startCalling(Context ctx)
+	{
+		ctx.startActivity(getIntentionToCall());
+	}
+	
+	public int describeContents() 
+	{
 		return 0;
 	}
 
 	
-	public void writeToParcel(Parcel dest, int flags) {
+	public void writeToParcel(Parcel dest, int flags) 
+	{
 		dest.writeString(telephoneNumber);
 	}
 	
