@@ -5,21 +5,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
-public class Call extends AbstractTask
+public class TaskCall extends GenericTask  implements TaskInterface
 {
 	private String telephoneNumber;
+	protected CharSequence notificationTitle = "Call to ";
+	protected CharSequence notificationMensage = "You have to call to ";
+	protected String notificationTickerText = "New task for you!";
 	
-	public Call() 
+	public TaskCall() 
 	{
+
 	}
 
-	public Call(Activity activity, Context context, String telephoneNumber) 
+	public TaskCall(Activity activity, Context context, String telephoneNumber) 
 	{
 		super(activity, context);
 		this.telephoneNumber = telephoneNumber;
 	} 
 
-	public Call(String telephoneNumber) 
+	public TaskCall(String telephoneNumber) 
 	{
 		this.telephoneNumber = telephoneNumber;
 	} 
@@ -48,10 +52,11 @@ public class Call extends AbstractTask
 	{
 		activity.startActivity(getIntentionToCall());
 	}
-
+	
 	public Intent getIntent() 
 	{
 		return getIntentionToCall();
 	}
+	
 	
 }
