@@ -3,6 +3,7 @@ package library.taskschedule;
 import java.util.Calendar;
 
 import library.taskschedule.task.AbstractTask;
+import library.taskschedule.task.parcelable.ParcelableTask;
 import library.taskschedule.task.receiver.TaskReceiver;
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -32,9 +33,7 @@ public class TaskScheduler
 		
 		if (notifyBefore) {
 			Intent intentExecuteReceiver = new Intent(context, task.getNotificationReceiverClass());
-			intentExecuteReceiver.putExtra("tickerText", task.getNotificationTickerText());
-			intentExecuteReceiver.putExtra("title", task.getNotificationTitle());
-			intentExecuteReceiver.putExtra("mensage", task.getNotificationMensage());
+			intentExecuteReceiver.putExtra("ParcelableTask", new ParcelableTask(task));
 			PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intentExecuteReceiver, PendingIntent.FLAG_ONE_SHOT);
 			AlarmManager alarmManager = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
 			alarmManager.set(AlarmManager.RTC_WAKEUP, whenRun, pendingIntent);

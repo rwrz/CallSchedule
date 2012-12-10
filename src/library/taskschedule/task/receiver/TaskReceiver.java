@@ -2,6 +2,7 @@ package library.taskschedule.task.receiver;
 
 import library.taskschedule.task.AbstractTask;
 import library.taskschedule.task.CallTask;
+import library.taskschedule.task.parcelable.ParcelableTask;
 import android.R;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -17,13 +18,11 @@ public class TaskReceiver extends BroadcastReceiver
 	public void onReceive(Context context, Intent intent) {
 		  NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		  
-		  CharSequence from = intent.getStringExtra("title");
-		  CharSequence message = intent.getStringExtra("mensage");
-		  String tickerText = intent.getStringExtra("tickerText");
-		  PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(), 0);
+		  AbstractTask task = ((ParcelableTask) intent.getParcelableExtra("ParcelableTask")).getAbstractTask();
+		  PendingIntent contentIntent = PendingIntent.getActivity(context, 0, task.getIntent(), 0);
 		  
-		  Notification notif = new Notification(R.drawable.star_on, tickerText, System.currentTimeMillis());
-		  notif.setLatestEventInfo(context, from, message, contentIntent);
+		  Notification notif = new Notification(R.drawable.star_on, task.getNotificationTickerText(), System.currentTimeMillis());
+		  notif.setLatestEventInfo(context, task.getNotificationTitle(), task.getNotificationMensage(), contentIntent);
 		  
 		  notificationManager.notify(1, notif);
 	}
