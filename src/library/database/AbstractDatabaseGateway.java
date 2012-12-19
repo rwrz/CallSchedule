@@ -1,41 +1,52 @@
 package library.database;
 
+import library.database.versionController.DatabaseVersionController;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 
-public abstract class AbstractDatabaseGateway implements InterfaceDatabaseGateway
+public abstract class AbstractDatabaseGateway extends SQLiteOpenHelper implements InterfaceDatabaseGateway
 {
-	private SQLiteDatabase dbConection;
-
 	protected String table = "";
-	
-	protected int mode = Context.MODE_PRIVATE;
-	
-	protected CursorFactory cursorFactory = null;
+	protected static String databaseName = "";
+	protected static CursorFactory cursorFactory = null;
+	protected static int currentVersion = 1;
+	private DatabaseVersionController versionController;
 	
 	public AbstractDatabaseGateway(Context context) 
 	{
-		dbConection = context.openOrCreateDatabase(table, mode, cursorFactory);
+		super(context, databaseName, cursorFactory, currentVersion);
+		versionController = getVersionController();
 	}
 
-	@Override
 	public void insert(ContentValues values) 
 	{
-		dbConection.insert(table, null, values);
+		getWritableDatabase().insert(table, null, values);
+	}
+	
+	public void delete(String where, String[] values)
+	{
+		getWritableDatabase().delete(table, where, values);
+	}
+
+	public void update(ContentValues values, String whereClause, String[] whereArgs) 
+	{
+		getWritableDatabase().update(table, values, whereClause, whereArgs);
+		
 	}
 	
 	@Override
-	public void delete(String where, String[] values)
+	public void onCreate(SQLiteDatabase db) 
 	{
-		dbConection.delete(table, where, values);
+		db.execSQL(versionController.getSqlQueryToCreate(currentVersion));
 	}
 
 	@Override
-	public void update(ContentValues values, String whereClause, String[] whereArgs) 
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) 
 	{
-		dbConection.update(table, values, whereClause, whereArgs);
+		db.execSQL(versionController.getSqlQueryToUpdate(oldVersion));
 		
 	}
 }

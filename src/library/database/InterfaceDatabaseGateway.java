@@ -1,11 +1,12 @@
 package library.database;
 
+import library.database.versionController.DatabaseVersionController;
 import android.content.ContentValues;
 
 public interface InterfaceDatabaseGateway {
 	/**
 	 * 
-	 * @param data Object[] {column = value}
+	 * @param data
 	 */
 	public void insert(ContentValues data);
 	/**
@@ -25,5 +26,5 @@ public interface InterfaceDatabaseGateway {
 	 * 
 	 * @return
 	 */
-	public String[] getConfigVersions();
+	public DatabaseVersionController getVersionController();
 }
